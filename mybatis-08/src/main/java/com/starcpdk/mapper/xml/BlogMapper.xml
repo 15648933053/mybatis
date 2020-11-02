@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--命名空间会绑定到dao接口-->
+<mapper namespace="com.starcpdk.mapper.BlogMapper">
+    <insert id="addBlog" parameterType="blog">
+        insert into blog (id , title , author , create_time , views)
+        values (#{id} , #{title} , #{author} , #{createTime} , #{views});
+    </insert>
+
+    <select id="queryBlogIF" parameterType="map" resultType="blog">
+        select * from blog
+        <where>
+            <if test="title != null">
+                and title = #{title}
+            </if>
+
+            <if test="author != null">
+                and author = #{author}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryBlogChoose" parameterType="map" resultType="Blog">
+        select * from blog
+        <where>
+            <choose>
+                <when test="title != null">
+                    title = #{title}
+                </when>
+                <when test="author != null">
+                    and author = #{author}
+                </when>
+                <otherwise>
+                    and views = #{views}
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <update id="updateBlog" parameterType="map">
+        update blog
+        <set>
+            <include refid="if_title_author"></include>
+        </set>
+        where id = #{id}
+    </update>
+    
+    <sql id="if_title_author">
+        <if test="title != null">
+            title = #{title},
+        </if>
+
+        <if test="author != null">
+            author = #{author}
+        </if>
+    </sql>
+
+    <select id="queryBlogForEach" parameterType="map" resultType="blog">
+        select * from blog
+        <where>
+            <foreach collection="ids" item="id" open="(" close=")" separator="or">
+                id = #{id}
+            </foreach>
+        </where>
+    </select>
+
+</mapper>

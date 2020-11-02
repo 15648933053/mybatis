@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--命名空间会绑定到dao接口-->
+<mapper namespace="com.starcpdk.mapper.UserMapper">
+
+<!--    <select id="getUserById" parameterType="int" resultType="user">-->
+<!--        select id , name , pwd password from user where id = #{id};-->
+<!--    </select>-->
+
+    <resultMap id="userMap" type="user">
+        <!-- column 数据库中的字段 ， property 实体类中的属性 -->
+<!--        <id property="id" column="id" />-->
+<!--        <result column="name" property="name" />-->
+        <result column="pwd" property="password" />
+    </resultMap>
+
+    <select id="getUserById" parameterType="int" resultMap="userMap">
+        select * from user where id = #{id};
+    </select>
+
+    <!-- 分页 -->
+    <select id="getUserByLimit" parameterType="map" resultMap="userMap">
+        select * from user limit #{startIndex} , #{pageSize};
+    </select>
+
+    <!-- 分页RowBounds -->
+    <select id="getUserByRowBounds" resultMap="userMap">
+        select * from user
+    </select>
+
+</mapper>

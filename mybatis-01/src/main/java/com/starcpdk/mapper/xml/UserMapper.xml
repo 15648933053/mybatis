@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--命名空间会绑定到dao接口-->
+<mapper namespace="com.starcpdk.mapper.UserMapper">
+    <select id="getUserList" resultType="com.starcpdk.pojo.User">
+        select * from user
+    </select>
+
+    <select id="getUserById" parameterType="int" resultType="com.starcpdk.pojo.User">
+        select * from user where id = #{id};
+    </select>
+
+    <!-- 对象中的属性可以直接取出来 -->
+    <insert id="addUser" parameterType="com.starcpdk.pojo.User">
+        insert into `user` (id , `name` , pwd) values (#{id},#{name},#{pwd});
+    </insert>
+
+    <insert id="addUserByMap" parameterType="map">
+        insert into `user` (id , `name` , pwd) values (#{yyfid},#{yyfname},#{yyfpwd});
+    </insert>
+
+    <update id="updateUser" parameterType="com.starcpdk.pojo.User">
+        update `user` set name = #{name} , pwd = #{pwd} where id = #{id};
+    </update>
+
+    <delete id="deleteUser" parameterType="int">
+        delete from `user` where id = #{id};
+    </delete>
+
+    <select id="likeSelUser" resultType="com.starcpdk.pojo.User">
+        select * from `user` where name like "%"#{value}"%"
+    </select>
+</mapper>
